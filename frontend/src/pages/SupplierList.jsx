@@ -10,17 +10,38 @@ const SupplierList = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
-  // Mengambil data supplier dari API
+  // Data dummy sebagai fallback
+  const dummyData = [
+    {
+      id: 888,
+      nama_supplier: 'CV Elektronik Jaya',
+      kontak: '08123456789',
+      alamat: 'Jl. Raya No. 10, Surabaya'
+    },
+    {
+      id: 887,
+      nama_supplier: 'Toko Mebel Sejahtera',
+      kontak: '08234567890',
+      alamat: 'Jl. Kayu Putih No. 5, Malang'
+    }
+  ];
+
+  // Ambil data supplier dari API
   const fetchSuppliers = async () => {
     try {
       const res = await api.get('/supplier');
-      setSuppliers(res.data);
+      if (res.data.length === 0) {
+        setSuppliers(dummyData);
+      } else {
+        setSuppliers(res.data);
+      }
     } catch (error) {
       console.error('Gagal mengambil data supplier:', error);
+      setSuppliers(dummyData);
     }
   };
 
-  // Menghapus supplier
+  // Hapus supplier
   const handleDelete = async (id) => {
     if (window.confirm('Yakin ingin menghapus supplier ini?')) {
       try {
@@ -71,7 +92,7 @@ const SupplierList = () => {
                 <td>{item.kontak}</td>
                 <td>{item.alamat}</td>
                 <td>
-                  {/* Tombol aksi hanya muncul untuk admin */}
+                  {/* Tombol aksi hanya muncul jika admin login */}
                   {isAuthenticated ? (
                     <>
                       <button

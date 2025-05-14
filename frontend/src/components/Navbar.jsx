@@ -13,11 +13,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#E9ECEF' }}>
       <div className="container-fluid">
         <a className="navbar-brand d-flex align-items-center" href="/">
           <img
-            src="/images/inventrack_logo.png"
+            src="/images/logo_tab.png"
             alt="Logo Inventrack"
             width="30"
             height="30"

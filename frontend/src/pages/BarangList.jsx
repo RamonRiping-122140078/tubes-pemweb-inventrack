@@ -10,13 +10,36 @@ const BarangList = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
+  // Data dummy sebagai fallback
+  const dummyData = [
+    {
+      id: 999,
+      nama_barang: 'Laptop',
+      kategori: 'Elektronik',
+      stok: 5,
+      harga: 12000000
+    },
+    {
+      id: 998,
+      nama_barang: 'Meja Kayu',
+      kategori: 'Furniture',
+      stok: 10,
+      harga: 850000
+    }
+  ];
+
   // Mengambil data barang dari API
   const fetchBarang = async () => {
     try {
       const res = await api.get('/barang');
-      setBarangList(res.data);
+      if (res.data.length === 0) {
+        setBarangList(dummyData); // Gunakan dummy jika API kosong
+      } else {
+        setBarangList(res.data);
+      }
     } catch (error) {
       console.error('Gagal mengambil data barang:', error);
+      setBarangList(dummyData); // Fallback ke dummy jika gagal
     }
   };
 
@@ -90,7 +113,7 @@ const BarangList = () => {
                       </button>
                     </>
                   ) : (
-                    <span className="text-muted">Tidak ada akses</span>
+                    <span className="text-muted">-</span>
                   )}
                 </td>
               </tr>
