@@ -1,7 +1,17 @@
 // src/components/Navbar.jsx
 import React from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container-fluid">
@@ -34,9 +44,17 @@ const Navbar = () => {
             <li className="nav-item">
               <a className="nav-link" href="/supplier">Supplier</a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/login">Login</a>
-            </li>
+            {!isAuthenticated ? (
+              <li className="nav-item">
+                <a className="nav-link" href="/login">Login</a>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <button className="btn btn-outline-light ms-2" onClick={handleLogout}>
+                  Logout
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       </div>

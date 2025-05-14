@@ -12,8 +12,9 @@ Aplikasi web sederhana untuk mengelola inventaris barang dan supplier menggunaka
 ## Fitur
 - CRUD Barang
 - CRUD Supplier
-- Login Pengguna
+- Login Pengguna (Autentikasi Dasar)
 - Tampilan Responsif
+- Manajemen State dengan Context API
 
 ## Dependensi
 ### Backend
