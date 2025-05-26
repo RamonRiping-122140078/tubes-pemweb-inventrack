@@ -1,4 +1,5 @@
 from pyramid.config import Configurator
+from pyramid.events import NewRequest, subscriber
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker, scoped_session
 from .models.meta import Base  # Your Base from models/meta.py
@@ -24,3 +25,7 @@ def main(global_config, **settings):
         config.include('.routes')
         config.scan()
         return config.make_wsgi_app()
+
+@subscriber(NewRequest)
+def new_request_subscriber(event):
+    event.request.add_finished_callback(lambda request: DBSession.remove())
