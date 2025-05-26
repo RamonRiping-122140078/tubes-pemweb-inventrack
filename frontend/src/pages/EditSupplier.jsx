@@ -8,17 +8,17 @@ const EditSupplier = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
-
   const [form, setForm] = useState({
     nama_supplier: '',
     kontak: '',
     alamat: ''
   });
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,48 +49,58 @@ const EditSupplier = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 dark:text-white">Edit Supplier</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="max-w-2xl mx-auto px-6 py-10">
+      <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-8 text-center">
+        Edit Supplier
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
         <div>
-          <label className="block text-gray-700 dark:text-gray-200 mb-1">Nama Supplier</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+            Nama Supplier
+          </label>
           <input
             type="text"
             name="nama_supplier"
             value={form.nama_supplier || ''}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div>
-          <label className="block text-gray-700 dark:text-gray-200 mb-1">Kontak</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+            Kontak
+          </label>
           <input
             type="text"
             name="kontak"
             value={form.kontak || ''}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div>
-          <label className="block text-gray-700 dark:text-gray-200 mb-1">Alamat</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+            Alamat
+          </label>
           <textarea
             name="alamat"
-            rows="3"
+            rows="4"
             value={form.alamat || ''}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Simpan Perubahan
-        </button>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition duration-200 shadow"
+          >
+            Simpan Perubahan
+          </button>
+        </div>
       </form>
     </div>
   );

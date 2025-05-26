@@ -27,13 +27,20 @@ const TambahBarang = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/barang', form);
-      navigate('/barang');
+      const response = await api.post('/barang', form);
+      if (response.status === 201 || response.status === 200) {
+        alert('Barang berhasil ditambahkan!');
+        navigate('/barang');
+      } else {
+        alert('Gagal menambahkan barang.');
+        console.error('Unexpected response:', response);
+      }
     } catch (error) {
       alert('Gagal menambahkan barang.');
       console.error('Error adding barang:', error);
     }
   };
+
 
   return (
     <div className="container mx-auto mt-10 max-w-md px-4">

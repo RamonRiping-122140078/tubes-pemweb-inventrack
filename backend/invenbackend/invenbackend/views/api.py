@@ -88,6 +88,22 @@ def login(request):
         'token': token
     }
 
+@view_config(route_name='me', renderer='json', request_method='GET')
+def me_view(request):
+    user = request.user
+    if user:
+        return {
+            'user': {
+                'id': user.id,
+                'username': user.username,
+                'role': user.role,
+                # tambahkan informasi lainnya
+            }
+        }
+    request.response.status = 401
+    return {'error': 'Unauthorized'}
+
+
 # ====== Barang ======
 
 @view_config(route_name='barang_list', renderer='json')
@@ -121,8 +137,10 @@ def barang_add(request):
         )
         request.dbsession.add(barang)
         request.dbsession.flush()
+        request.dbsession.commit()
         return {'success': True, 'barang': barang.to_dict()}
     except Exception as e:
+        request.dbsession.rollback()
         return HTTPBadRequest(json_body={'error': str(e)})
 
 
@@ -139,8 +157,10 @@ def barang_update(request):
                 setattr(barang, field, data[field])
         if 'tanggal_masuk' in data:
             barang.tanggal_masuk = datetime.date.fromisoformat(data['tanggal_masuk']) if data['tanggal_masuk'] else None
+        request.dbsession.commit()
         return {'success': True, 'barang': barang.to_dict()}
     except Exception as e:
+        request.dbsession.rollback()
         return HTTPBadRequest(json_body={'error': str(e)})
 
 
@@ -150,8 +170,13 @@ def barang_delete(request):
     barang = request.dbsession.query(Barang).get(request.matchdict['id'])
     if not barang:
         return HTTPNotFound(json_body={'error': 'Barang tidak ditemukan'})
-    request.dbsession.delete(barang)
-    return {'success': True, 'message': 'Barang berhasil dihapus'}
+    try:
+        request.dbsession.delete(barang)
+        request.dbsession.commit()
+        return {'success': True, 'message': 'Barang berhasil dihapus'}
+    except Exception as e:
+        request.dbsession.rollback()
+        return HTTPBadRequest(json_body={'error': str(e)})
 
 
 # ====== Supplier ======
@@ -184,8 +209,10 @@ def supplier_add(request):
         )
         request.dbsession.add(supplier)
         request.dbsession.flush()
+        request.dbsession.commit()
         return {'success': True, 'supplier': supplier.to_dict()}
     except Exception as e:
+        request.dbsession.rollback()
         return HTTPBadRequest(json_body={'error': str(e)})
 
 
@@ -200,8 +227,10 @@ def supplier_update(request):
         for field in ['nama_supplier', 'kontak', 'alamat']:
             if field in data:
                 setattr(supplier, field, data[field])
+        request.dbsession.commit()
         return {'success': True, 'supplier': supplier.to_dict()}
     except Exception as e:
+        request.dbsession.rollback()
         return HTTPBadRequest(json_body={'error': str(e)})
 
 
@@ -211,9 +240,13 @@ def supplier_delete(request):
     supplier = request.dbsession.query(Supplier).get(request.matchdict['id'])
     if not supplier:
         return HTTPNotFound(json_body={'error': 'Supplier tidak ditemukan'})
-    request.dbsession.delete(supplier)
-    return {'success': True, 'message': 'Supplier berhasil dihapus'}
-
+    try:
+        request.dbsession.delete(supplier)
+        request.dbsession.commit()
+        return {'success': True, 'message': 'Supplier berhasil dihapus'}
+    except Exception as e:
+        request.dbsession.rollback()
+        return HTTPBadRequest(json_body={'error': str(e)})
 
 # ====== Users ======
 
@@ -222,7 +255,6 @@ def supplier_delete(request):
 def user_list(request):
     users = request.dbsession.query(User).all()
     return {'users': [u.to_dict() for u in users]}
-
 
 @view_config(route_name='user_detail', renderer='json')
 @require_admin
@@ -246,8 +278,10 @@ def user_add(request):
         )
         request.dbsession.add(user_obj)
         request.dbsession.flush()
+        request.dbsession.commit()
         return {'success': True, 'user': user_obj.to_dict()}
     except Exception as e:
+        request.dbsession.rollback()
         return HTTPBadRequest(json_body={'error': str(e)})
 
 
@@ -264,8 +298,10 @@ def user_update(request):
                 setattr(user_obj, field, data[field])
         if 'password' in data:
             user_obj.password_hash = bcrypt.hash(data['password'])
+        request.dbsession.commit()
         return {'success': True, 'user': user_obj.to_dict()}
     except Exception as e:
+        request.dbsession.rollback()
         return HTTPBadRequest(json_body={'error': str(e)})
 
 
@@ -276,8 +312,12 @@ def user_delete(request):
     if not user_obj:
         return HTTPNotFound(json_body={'error': 'User tidak ditemukan'})
     request.dbsession.delete(user_obj)
-    return {'success': True, 'message': 'User berhasil dihapus'}
-
+    try:
+        request.dbsession.commit()
+        return {'success': True, 'message': 'User berhasil dihapus'}
+    except Exception as e:
+        request.dbsession.rollback()
+        return HTTPBadRequest(json_body={'error': str(e)})
 
 @view_config(route_name='any_options', request_method='OPTIONS')
 def options_handler(request):

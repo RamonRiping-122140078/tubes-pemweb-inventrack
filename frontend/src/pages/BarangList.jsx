@@ -8,7 +8,7 @@ import api from '../api/axiosInstance';
 const BarangList = () => {
   const [barangList, setBarangList] = useState([]);
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const fetchBarang = async () => {
     try {
@@ -50,7 +50,7 @@ const BarangList = () => {
           Daftar Barang
         </h2>
 
-        {isAuthenticated && (
+        {isAuthenticated && user?.role === 'admin' && (
           <button
             className="mb-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
             onClick={() => navigate('/barang/tambah')}
@@ -85,7 +85,7 @@ const BarangList = () => {
                     Rp{parseInt(item.harga).toLocaleString()}
                   </td>
                   <td className="py-2 px-4 border-b dark:border-gray-600">
-                    {isAuthenticated ? (
+                    {isAuthenticated && user?.role === 'admin' ? (
                       <div className="flex gap-2">
                         <button
                           className="px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded"

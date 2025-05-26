@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -79,6 +79,17 @@ const Navbar = () => {
           >
             Supplier
           </Link>
+
+          {/* Hanya tampil untuk admin */}
+          {user?.role === 'admin' && (
+            <Link
+              to="/users"
+              className="block px-3 py-2 rounded text-indigo-700 dark:text-indigo-300 font-semibold hover:bg-indigo-100 dark:hover:bg-indigo-800"
+              onClick={() => setIsOpen(false)}
+            >
+              Manajemen User
+            </Link>
+          )}
 
           {!isAuthenticated ? (
             <Link

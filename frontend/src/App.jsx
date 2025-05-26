@@ -9,6 +9,7 @@ import TambahBarang from './pages/TambahBarang';
 import EditBarang from './pages/EditBarang';
 import TambahSupplier from './pages/TambahSupplier';
 import EditSupplier from './pages/EditSupplier';
+import UserManagement from './pages/UserManagement';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
           <Route path="/supplier" element={<SupplierList />} />
           <Route path="/supplier/tambah" element={<TambahSupplier />} />
           <Route path="/supplier/ubah/:id" element={<EditSupplier />} />
+
+          <Route path="/users" element={<UserManagement />} />
         </Routes>
       </Router>
     </AuthProvider>

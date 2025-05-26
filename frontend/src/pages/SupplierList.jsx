@@ -8,7 +8,7 @@ const SupplierList = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const fetchSuppliers = async () => {
     try {
@@ -48,7 +48,7 @@ const SupplierList = () => {
           Daftar Supplier
         </h2>
 
-        {isAuthenticated && (
+        {isAuthenticated && user?.role === 'admin' && (
           <button
             className="mb-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
             onClick={() => navigate('/supplier/tambah')}
@@ -86,7 +86,7 @@ const SupplierList = () => {
                     <td className="py-2 px-4 border-b dark:border-gray-600">{item.kontak}</td>
                     <td className="py-2 px-4 border-b dark:border-gray-600">{item.alamat}</td>
                     <td className="py-2 px-4 border-b dark:border-gray-600">
-                      {isAuthenticated ? (
+                      {isAuthenticated && user?.role === 'admin'? (
                         <div className="flex gap-2">
                           <button
                             className="px-3 py-1 text-white bg-blue-600 hover:bg-blue-700 rounded"
@@ -96,7 +96,7 @@ const SupplierList = () => {
                           </button>
                           <button
                             className="px-3 py-1 text-white bg-red-600 hover:bg-red-700 rounded"
-                            onClick={() => handleDelete(item.id)}
+                            onClick={() => handleDelete(item.id_supplier)}
                           >
                             Hapus
                           </button>

@@ -3,19 +3,23 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  // ✅ Cek token saat pertama kali aplikasi dijalankan
+  const [isAuthenticated, setIsAuthenticated] = useState(() => !!localStorage.getItem('user'));
+
+  // Simpan user ke localStorage saat user berubah
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
       setIsAuthenticated(true);
-      // Kalau ingin, kamu bisa fetch user profile dari backend dengan token:
-      // fetch('/api/me', { headers: { Authorization: `Bearer ${token}` } })
-      setUser(null); // sementara null, atau isi dengan user yang disimpan
+    } else {
+      localStorage.removeItem('user');
+      setIsAuthenticated(false);
     }
-  }, []);
+  }, [user]);
 
   const login = async (username, password) => {
     try {
@@ -28,16 +32,18 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (!response.ok) {
+        // misal login gagal (401, 400, dll)
         setIsAuthenticated(false);
         setUser(null);
         return false;
       }
 
       const data = await response.json();
-
+      // Asumsi backend mengirim { success: true, user: {...} } atau token
       if (data.success) {
         setIsAuthenticated(true);
         setUser(data.user || null);
+        // Simpan token kalau ada, misal di localStorage
         if (data.token) {
           localStorage.setItem('token', data.token);
         }

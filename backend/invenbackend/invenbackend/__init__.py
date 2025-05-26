@@ -31,6 +31,7 @@ def main(global_config, **settings):
 
         config.include('pyramid_jinja2')
         config.include('.routes')
+        config.add_route('me', '/api/me')
 
         config.add_route('any_options', '/{path:.*}')
         
