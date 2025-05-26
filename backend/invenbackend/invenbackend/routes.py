@@ -1,6 +1,9 @@
 def includeme(config):
     config.add_route('home', '/')
 
+    # Login route
+    config.add_route('login', '/api/login', request_method='POST')
+
     # Barang
     config.add_route('barang_list', '/api/barang', request_method='GET')
     config.add_route('barang_detail', '/api/barang/{id}', request_method='GET')

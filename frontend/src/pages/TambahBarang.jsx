@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import api from '../api/axiosInstance';
 
 const TambahBarang = () => {
   const { isAuthenticated } = useAuth();
@@ -35,26 +36,69 @@ const TambahBarang = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Tambah Barang</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label>Nama Barang</label>
-          <input name="nama_barang" className="form-control" onChange={handleChange} required />
+    <div className="container mx-auto mt-10 max-w-md px-4">
+      <h2 className="text-2xl font-semibold mb-6">Tambah Barang</h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label className="block mb-2 font-medium" htmlFor="nama_barang">
+            Nama Barang
+          </label>
+          <input
+            id="nama_barang"
+            name="nama_barang"
+            type="text"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div className="mb-3">
-          <label>Kategori</label>
-          <input name="kategori" className="form-control" onChange={handleChange} required />
+        <div>
+          <label className="block mb-2 font-medium" htmlFor="kategori">
+            Kategori
+          </label>
+          <input
+            id="kategori"
+            name="kategori"
+            type="text"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div className="mb-3">
-          <label>Stok</label>
-          <input type="number" name="stok" className="form-control" onChange={handleChange} required />
+        <div>
+          <label className="block mb-2 font-medium" htmlFor="stok">
+            Stok
+          </label>
+          <input
+            id="stok"
+            name="stok"
+            type="number"
+            min="0"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div className="mb-3">
-          <label>Harga</label>
-          <input type="number" name="harga" className="form-control" onChange={handleChange} required />
+        <div>
+          <label className="block mb-2 font-medium" htmlFor="harga">
+            Harga
+          </label>
+          <input
+            id="harga"
+            name="harga"
+            type="number"
+            min="0"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+            required
+          />
         </div>
-        <button type="submit" className="btn btn-success">Simpan</button>
+        <button
+          type="submit"
+          className="w-full rounded-md bg-green-600 py-2 text-white hover:bg-green-700 transition"
+        >
+          Simpan
+        </button>
       </form>
     </div>
   );
