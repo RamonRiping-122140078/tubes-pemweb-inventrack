@@ -304,7 +304,7 @@ def user_update(request):
         for field in ['username', 'role']:
             if field in data:
                 setattr(user_obj, field, data[field])
-        if 'password' in data:
+        if 'password' in data and data['password']:
             user_obj.password_hash = bcrypt.hash(data['password'])
         request.dbsession.commit()
         return {'success': True, 'user': user_obj.to_dict()}

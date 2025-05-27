@@ -35,7 +35,7 @@ def main(global_config, **settings):
     
     config.registry['dbsession_factory'] = session_factory
     def dbsession_factory(request):
-        return request.registry['dbsession_factory'](request)
+        return request.registry['dbsession_factory']()
 
     config.add_request_method(dbsession_factory, 'dbsession', reify=True)
 
