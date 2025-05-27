@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import './App.css'; // Import CSS file for global styles
+import './App.css';
 import HomePage from './pages/Home';
 import BarangList from './pages/BarangList';
 import SupplierList from './pages/SupplierList';
