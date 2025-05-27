@@ -139,13 +139,13 @@ const UserManagement = () => {
 									<td className="p-2 border text-center">{u.role}</td>
 									<td className="p-2 border text-center">
 										<button
-											className="px-2 py-1 bg-yellow-400 rounded mr-2"
+											className="px-2 py-1 text-white rounded mr-2"
 											onClick={() => handleEdit(u)}
 										>
 											Edit
 										</button>
 										<button
-											className="px-2 py-1 bg-red-500 text-white rounded"
+											className="px-2 py-1 text-white rounded"
 											onClick={() => handleDelete(u.id_user)}
 										>
 											Hapus

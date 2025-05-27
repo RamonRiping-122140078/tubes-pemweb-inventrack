@@ -7,9 +7,8 @@ from sqlalchemy import (
     Float,
     ForeignKey,
 )
-from sqlalchemy.orm import relationship
-from .meta import Base
-
+from sqlalchemy.orm import relationship, scoped_session, sessionmaker, declarative_base
+from .meta import Base, DBSession
 
 # Supplier model
 class Supplier(Base):

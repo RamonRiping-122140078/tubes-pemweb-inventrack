@@ -1,5 +1,6 @@
 def includeme(config):
     config.add_route('home', '/')
+    config.add_route('me', '/api/me')
 
     # Login route
     config.add_route('login', '/api/login', request_method='POST')

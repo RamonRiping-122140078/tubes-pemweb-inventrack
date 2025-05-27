@@ -8,4 +8,8 @@ export default defineConfig({
     react(), 
     tailwindcss(),
   ],
+  server: {
+    port: 5173,  // kunci port ke 5173
+    strictPort: true, // kalau port sedang dipakai, Vite akan gagal jalan (bukan pindah port)
+  },
 })
