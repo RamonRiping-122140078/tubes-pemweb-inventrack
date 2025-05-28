@@ -1,7 +1,7 @@
 # test_user.py
 import pytest
 import jwt
-import datetime
+from datetime import datetime, timedelta, timezone
 import os
 
 # Fixture token admin
@@ -10,7 +10,7 @@ def dummy_admin_token():
     payload = {
         "sub": "admin_user_id",
         "role": "admin",
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+        "exp": datetime.now(timezone.utc) + timedelta(hours=1)
     }
     secret = os.environ.get("JWT_SECRET", "changeme")
     token = jwt.encode(payload, secret, algorithm="HS256")

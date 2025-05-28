@@ -62,8 +62,11 @@ def testapp(dbsession, engine):
     # Jalankan main() dari Pyramid, yang meng-include route & view
     app = main({}, **settings)
 
-     # Override `request.dbsession` di konfigurasi Pyramid
-    app.registry['dbsession_factory'] = lambda request: dbsession
+    def dummy_dbsession_factory(request=None):
+        return dbsession
+
+    app.registry['dbsession_factory'] = dummy_dbsession_factory
+
 
     from webtest import TestApp
     return TestApp(app)

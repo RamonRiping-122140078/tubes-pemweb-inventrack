@@ -34,9 +34,11 @@ def main(global_config, **settings):
     config.add_subscriber(new_request_subscriber, NewRequest)
     
     config.registry['dbsession_factory'] = session_factory
-    def dbsession_factory(request):
-        return request.registry['dbsession_factory']()
 
+    def dbsession_factory(request=None):
+        session_factory = request.registry['dbsession_factory']
+        return session_factory()
+    
     config.add_request_method(dbsession_factory, 'dbsession', reify=True)
 
     # Static view, include jinja2 dan routes
